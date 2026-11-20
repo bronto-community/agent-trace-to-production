@@ -27,7 +27,7 @@ Waiting screen, on screen during the break between the sessions.
 
 Every screenshot in this deck comes from a real run of the lab (lab/ in the repo). Anything marked LIVE in the notes can be done live instead; the screenshot is the fallback.
 
-Before the session, in the terminal you demo from (lab/): `export OTEL_METRICS_EXPORTER=otlp OTEL_LOGS_EXPORTER=otlp OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE=delta OTEL_PYTHON_LOGGING_AUTO_INSTRUMENTATION_ENABLED=true`, and for the Collector `export BACKEND_ENDPOINT=https://ingestion.eu.bronto.io BACKEND_API_KEY=<key> BACKEND_DATASET=bookshop-lab`. Without the three BACKEND variables every `docker compose up` in the cues points the Collector at the local sink and Bronto gets nothing. For the terminal slides: `./demo-terminal.sh` in slides/ (needs `brew install ttyd`); it serves the lab shell on 127.0.0.1:7681 and sets the telemetry and backend variables itself from ../.env. Click into the terminal to type; click outside it before pressing a key for the next slide. Once per machine, after `docker compose up -d` in lab/: `./load-saved-runs.sh` puts the six saved runs into Jaeger under their original trace IDs, so the SAVED RUN links in the notes of failures 3 and 4 open. Time cues assume a 45-minute talk with the live demos.
+Before the session, in the terminal you demo from (lab/): `export OTEL_METRICS_EXPORTER=otlp OTEL_LOGS_EXPORTER=otlp OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE=delta OTEL_PYTHON_LOGGING_AUTO_INSTRUMENTATION_ENABLED=true`, and for the Collector `export BACKEND_ENDPOINT=https://ingestion.eu.bronto.io BACKEND_API_KEY=<key> BACKEND_DATASET=bookshop-lab`. The demo shell sets these itself from ../.env; in any other terminal, a `docker compose up` without them points the Collector at the local sink and Bronto gets nothing. For the terminal slides: `./demo-terminal.sh` in slides/ (needs `brew install ttyd`); it serves the lab shell on 127.0.0.1:7681 and sets the telemetry and backend variables itself from ../.env. Click into the terminal to type; click outside it before pressing a key for the next slide. Once per machine, after `docker compose up -d` in lab/: `./load-saved-runs.sh` puts the six saved runs into Jaeger under their original trace IDs, so the SAVED RUN links (failure 3 and the "Give the wrong answer a signal" slide) open. Time cues assume a 45-minute talk with the live demos.
 -->
 
 ---
@@ -150,7 +150,7 @@ part: Where we start
 <!--
 (0:01) Juraci's demo ran from step 0, no telemetry, to step 4, tokens and cost. We continue the numbering.
 
-Each step has the same shape: first why, on a real screenshot of what's wrong. Then what and how. Then the proof. And each step ends with one thing you can do on Monday.
+Each step has the same shape: first why. Then what and how. Then the proof. And each step ends with one thing you can do on Monday.
 
 The claim for the whole hour, and one of the takeaways you were promised: agent observability is an extension of the stack you have. Same Collector, same signals, same alerts. If you also use an eval or LLM tool, it can sit behind the same Collector as one more destination.
 -->
@@ -249,7 +249,7 @@ part: Step 5 · Connect · live
 <Jump :to="[{ label: 'Jaeger', url: 'http://localhost:16686/search?service=bookshop-agent&lookback=1h&limit=20' }, { label: 'Bronto', url: 'https://app.eu.bronto.io/org/3cf39069-b798-4b37-b0a4-08f02ec7f17c/tracing/traces?timeRange=Last+15+minutes&services=bookshop-agent' }]" />
 
 <!--
-LIVE (about 2 min). Type `connect`. It prints the two real commands before it runs them: the `docker compose` line that starts the Collector with step5-connect.yaml, and the agent run, unchanged from Session 1.
+LIVE (about 2 min). Type `connect`. It prints the two real commands before it runs them: the `docker compose` line that starts the Collector with step5-connect.yaml, and the agent run. The agent is Session 1's with the few lines this session adds; nothing in it changed to make the Collector work.
 
 Then the Jaeger tab on the right border: Find Traces, open the run, open one chat span and one execute_tool span. Then the Bronto tab: the same trace, the same spans.
 
@@ -267,7 +267,7 @@ part: Step 5 · Connect · proof
   <div><span class="chip">Bronto · or any OTLP backend</span><Shot src="/img/shots/bronto-trace.png" h="272px" /></div>
 </div>
 
-<p class="cap1 dim">Trace 8e8886ac in both. The agent is unchanged, and its telemetry is now configured in one file.</p>
+<p class="cap1 dim">Trace 8e8886ac in both. Nothing changed in the agent, and where its telemetry goes is now configured in one file.</p>
 
 <style>
 .pair { display: grid; grid-template-columns: 1.25fr 1fr; gap: 1.2rem; align-items: start; margin-top: 0.3rem; }
@@ -320,7 +320,7 @@ part: Step 6 · Govern · why
 
 <Shot src="/img/shots/content-raw.png" :marks="[{ x: 0.8, y: 85.5, w: 98.4, h: 13.5 }]" />
 
-<p class="cap1 dim">A name, an email address and a card number. Everyone with backend access can read them for as long as traces are kept.</p>
+<p class="cap1 dim">A name, an email address and a card number, readable by everyone with backend access.</p>
 
 <!--
 (0:08) WHY. Juraci's last content slide: one switch decides what leaves the process. This is that switch turned on, in Jaeger's GenAI view. A real run from the lab.
@@ -336,7 +336,7 @@ part: Step 6 · Govern
 
 # People still want the content, so ask who wrote it
 
-<Shot src="/img/shots/content-raw.png" :marks="[{ x: 0.8, y: 10.6, w: 98.4, h: 19, tone: 'ok' }, { x: 0.8, y: 43, w: 98.4, h: 39, tone: 'ok' }, { x: 0.8, y: 86, w: 98.4, h: 13, tone: 'bad' }]" />
+<Shot src="/img/shots/content-raw.png" :marks="[{ x: 0.8, y: 9.4, w: 98.4, h: 22, tone: 'ok' }, { x: 0.8, y: 43, w: 98.4, h: 39, tone: 'ok' }, { x: 0.8, y: 86, w: 98.4, h: 13, tone: 'bad' }]" />
 
 <p class="cap1">Your system's text is close to code. <b class="them">The customer's two lines need a decision.</b></p>
 
@@ -453,7 +453,7 @@ LIVE on the next slide.
 
 `summary: info` adds a count of what was masked to every span it touched. Chart that by service and you see which team just started sending something they shouldn't.
 
-Next slide: what it did to the screenshot you just saw.
+After the demo slide: what it did to the screenshot you just saw.
 -->
 
 ---
@@ -469,7 +469,7 @@ part: Step 6 · Govern · live
 <!--
 LIVE optional (about 1.5 min). Type `govern`. Jaeger tab: open the run, the first chat span, GenAI view, input messages. Email and card masked, the name untouched, and the ISBNs in the catalog excerpt masked too.
 
-Skip this slide if time is short: the next one shows the same result as a screenshot.
+Skip this slide if time is short: the next one shows the same masking as a screenshot, on a slightly different message.
 -->
 
 ---
@@ -625,7 +625,8 @@ signal_to_metrics:
              + Int(attributes["gen_ai.usage.output_tokens"])
     - name: bookshop.run.cost            # what the gateway billed
       conditions: ['attributes["gen_ai.operation.name"] == "invoke_agent"']
-      sum: { value: Double(attributes["bookshop.llm.cost_usd"]) }
+      sum:
+        value: Double(attributes["bookshop.llm.cost_usd"])
 ```
 
 </div>
@@ -685,10 +686,10 @@ part: Step 7 · Measure · proof
 <Jump :to="[{ label: 'Bronto: metrics', url: 'https://app.eu.bronto.io/org/3cf39069-b798-4b37-b0a4-08f02ec7f17c/metrics?timeRange=Last+1+hour&queries=%5B%7B%22committedFilter%22%3A%22%22%2C%22groupKeys%22%3A%5B%5D%2C%22metricId%22%3A%22b24c67e1-a5ad-3b50-b2e7-46954760f22a%22%2C%22name%22%3A%22A%22%2C%22statFunction%22%3A%22average%22%7D%5D' }]" />
 
 <div class="quad">
-  <div><span class="chip">tokens, in and out</span><Shot src="/img/shots/bronto-tokens-type.png" h="150px" /></div>
-  <div><span class="chip">tokens per run · from spans</span><Shot src="/img/shots/bronto-run-tokens.png" h="150px" /></div>
-  <div><span class="chip">latency per tool</span><Shot src="/img/shots/bronto-tool-latency.png" h="150px" /></div>
-  <div><span class="chip">retrieval latency</span><Shot src="/img/shots/bronto-retrieval.png" h="150px" /></div>
+  <div><span class="chip">tokens, in and out</span><Shot src="/img/shots/bronto-tokens-type.png" h="144px" /></div>
+  <div><span class="chip">tokens per run · from spans</span><Shot src="/img/shots/bronto-run-tokens.png" h="144px" /></div>
+  <div><span class="chip">latency per tool</span><Shot src="/img/shots/bronto-tool-latency.png" h="144px" /></div>
+  <div><span class="chip">retrieval latency</span><Shot src="/img/shots/bronto-retrieval.png" h="144px" /></div>
 </div>
 
 <p class="cap1 dim">About 90 runs. Three charts come from the instrumentation's own metrics and one from spans.</p>
@@ -737,9 +738,9 @@ part: Step 7 · Measure
 </style>
 
 <!--
-(0:22) Budgets and alerts that catch runaway agents. This is a real monitor in the backend, on the metric from two slides ago: tokens per run, 99th percentile over five minutes, above 3,000.
+(0:22) Budgets and alerts that catch runaway agents. This is a real monitor in the backend, on the tokens-per-run metric from the last chart, 99th percentile over five minutes, above 3,000.
 
-And this is it firing, this morning. A run got stuck re-checking an order and used about 4,600 tokens; a normal run uses about 1,600. The loop ended at 09:13, the alert opened at 09:15. We'll open that run in step 9.
+And this is it firing, yesterday morning. The chart is smoothed over time buckets; the incident row has the exact times. A run got stuck re-checking an order and used about 4,600 tokens; a normal run uses about 1,600. The loop ended at 09:13, the alert opened at 09:15. We'll open that run in step 9.
 
 Two honest limits. A percentile works at lab volume; with real traffic, alert on the count of runs above the budget instead. And the metric comes from the run span, which only exists when the run ends. For a run that is still burning, the signal is the rate of the instrumentation's own token metric.
 
@@ -954,7 +955,7 @@ part: Step 8 · Sample · live
 <Jump :to="[{ label: 'Jaeger: all runs', url: 'http://localhost:16686/search?service=bookshop-agent&lookback=1h&limit=20' }, { label: 'Bronto: kept runs', url: 'https://app.eu.bronto.io/org/3cf39069-b798-4b37-b0a4-08f02ec7f17c/tracing/traces?timeRange=Last+5+minutes&services=bookshop-agent' }]" />
 
 <!--
-LIVE optional (about 1 min, plus half a minute for the sampler to decide). Type `sample`. Jaeger sits before the sampler and shows all seven. The Bronto tab shows only the kept ones.
+LIVE optional (about 1 min, plus a few seconds for the sampler to decide after each run ends). Type `sample`. Jaeger sits before the sampler and shows all seven. The Bronto tab shows only the kept ones.
 
 The split differs every time: expect the normal run dropped, slow and loop kept, and each run without an order number kept only if it skipped the order tool.
 -->
@@ -984,7 +985,7 @@ The case to know: a run longer than the wait is decided without its root span, s
 
 It needs the whole run in one place. That's the central tier from step 5: a load-balancing exporter in front that routes by trace ID.
 
-And it only knows what you told it. The dropped row on the last slide wasn't a bug in the config.
+And it only knows what you told it. The dropped row in the table of seven runs wasn't a bug in the config.
 -->
 
 ---
@@ -1063,7 +1064,7 @@ part: Step 9 · Debug
 
 <div class="pair2">
   <Shot src="/img/shots/bronto-retrieval.png" />
-  <Shot src="/img/shots/trace-slow.png" :marks="[{ x: 0.4, y: 40, w: 99.2, h: 6.6, label: '8.0 s in retrieval', ls: 'left:auto;right:-3px' }]" />
+  <Shot src="/img/shots/trace-slow.png" :marks="[{ x: 0.4, y: 40.6, w: 99.2, h: 7.4, label: '8.0 s in retrieval', ls: 'left:auto;right:-3px' }]" />
 </div>
 
 <div class="dx"><span><b>Detected by</b> retrieval latency, a metric the instrumentation already emits</span><span><b>Explained by</b> the trace: 8 s in one span, before the model was even called</span></div>
@@ -1091,7 +1092,7 @@ part: Step 9 · Debug · live
 <Jump :to="[{ label: 'Jaeger', url: 'http://localhost:16686/search?service=bookshop-agent&lookback=1h&limit=20' }, { label: 'Bronto', url: 'https://app.eu.bronto.io/org/3cf39069-b798-4b37-b0a4-08f02ec7f17c/tracing/traces?timeRange=Last+15+minutes&services=bookshop-agent' }]" />
 
 <!--
-LIVE (about 1 min). Type `slow`. While it runs: this is the simulated one, an eight-second sleep in the retrieval step.
+LIVE (about 1 min). Type `slow`. If the Collector isn't on the step 8 config yet, the command switches it first and prints that line too. While it runs: this is the simulated one, an eight-second sleep in the retrieval step.
 
 Jaeger tab: open the run, point at the 8 s retrieval span, everything after it normal.
 -->
@@ -1116,9 +1117,9 @@ The loop from step 7. Detected by the budget alert from step 7: about 4,600 toke
 
 The trace explains it: the same order lookup, five times, no error anywhere. Each call succeeded and said "pending".
 
-Why did the model keep asking? Two reasonable things met. The order system answers before its lookup is done. And someone added a line to the system prompt: never tell a customer their order is pending, keep checking until you have a final status. A product requirement. With content captured, that line is right there in the trace.
+Why did the model keep asking? Two reasonable things met. The order system answers before its lookup is done. And someone added a line to the system prompt: never tell a customer their order is pending, keep checking until you have a final status. A product requirement. With content captured, that line is right there in the telemetry.
 
-The next slide shows where that line is visible.
+The slide after the demo shows where that line is visible.
 
 No error, no exception. It ended with "Sorry, I could not finish that request", at the five-round cap.
 
@@ -1131,12 +1132,12 @@ part: Step 9 · Debug · live
 
 # Live: the loop
 
-<Term type="loop" runs="runs the agent with the prompt line and the order system that make it loop" />
+<Term type="loop" runs="runs the agent with the prompt line and order system that make it loop, content as log events" />
 
 <Jump :to="[{ label: 'Jaeger', url: 'http://localhost:16686/search?service=bookshop-agent&lookback=1h&limit=20' }, { label: 'Bronto: monitor', url: 'https://app.eu.bronto.io/org/3cf39069-b798-4b37-b0a4-08f02ec7f17c/monitors/lists?activeMonitorId=9c81d708-3e21-40db-b506-415acde45efc&timeRange=Last+4+hours' }, { label: 'Bronto: logs', url: 'https://app.eu.bronto.io/org/3cf39069-b798-4b37-b0a4-08f02ec7f17c/search?display=list&order=newest&timeRange=Last+20+minutes&select=*%2C%40raw&datasetAuthority=manual&logIds=80a64081-3aa2-4e0d-4a80-7a2b938f9d30&where=' }]" />
 
 <!--
-LIVE (about 1.5 min). Type `loop`. It ends with "Sorry, I could not finish that request."
+LIVE (about 1.5 min). Type `loop`. Like `slow`, it makes sure the Collector is on the step 8 config; it also sends content as log events, which the slide after this one uses. It ends with "Sorry, I could not finish that request."
 
 Jaeger tab: the five lookups, then the token total and `bookshop.run.tools` on the run span. The monitor tab shows the alert a minute or two later, so come back to it. The logs tab has this run's content events: that is the next slide.
 -->
@@ -1155,9 +1156,9 @@ part: Step 9 · Debug
 </div>
 
 <!--
-(0:36) This is the third signal: a log record, from the same run, in the same backend.
+(0:36) This is the third signal: a log record from a loop run like the one we just saw, in the same backend.
 
-It's the content option from step 6, the one on log events. The spans of this run carry no prompt. The model call's content arrived as a log event instead, with the trace ID on it. From the trace I get here, and from here back to the trace.
+It's the content option from step 6, the one on log events. The spans of that run carry no prompt. The model call's content arrived as a log event instead, with the trace ID on it. From the trace I get here, and from here back to the trace.
 
 And there is the cause: the last sentence of the system prompt. Never tell a customer their order is pending, keep checking until you have a final status.
 
@@ -1179,7 +1180,7 @@ part: Step 9 · Debug
   <div><span class="mono">check_inventory ×3 → get_order_status</span><i style="width:1.8%"/><b>1</b></div>
 </div>
 
-<div class="cfg pl"><div class="cfg-h"><b>agent_v5.py</b><span>the one line that makes a path visible</span></div>
+<div class="cfg pathline"><div class="cfg-h"><b>agent_v5.py</b><span>the one line that makes a path visible</span></div>
 
 ```python
 agent.attributes["bookshop.run.tools"] += call.function.name + " "
@@ -1195,7 +1196,7 @@ agent.attributes["bookshop.run.tools"] += call.function.name + " "
 .bars i { display: block; height: 1.15rem; border-radius: 0 4px 4px 0; background: #BDBDBD; }
 .bars .odd i { background: var(--orange); } .bars .odd span { font-weight: 700; }
 .bars b { font-variant-numeric: tabular-nums; }
-.pl { margin-top: 0.8rem; } .pl .slidev-code { font-size: 0.8rem !important; }
+.pathline { margin-top: 0.8rem; } .pathline .slidev-code { font-size: 0.8rem !important; }
 </style>
 
 <!--
@@ -1268,7 +1269,7 @@ tool.attributes["bookshop.check.order_owned"] = order["customer"] == CUSTOMER_ID
 <!--
 (0:40) So you create the signal. Three kinds.
 
-SAVED RUN, not live: the model picked the wrong order in only 1 of 4 attempts. Say so, then open the saved run: Jaeger http://localhost:16686/trace/457bd8a5df33ebb2fc504d5c4d903e63 , or Bronto https://app.eu.bronto.io/org/3cf39069-b798-4b37-b0a4-08f02ec7f17c/tracing/traces?timeRange=Last+2+days&services=bookshop-agent&traceId=457bd8a5df33ebb2fc504d5c4d903e63 . Open the `execute_tool get_order_status` span: arguments ORD-1042, and `bookshop.check.order_owned = false`. The sampler kept this run because of that attribute.
+SAVED RUN, not live: the model picks the wrong order only some of the time: 1 of 4 attempts in my dry run, 5 of 30 over a longer series. Say so, then open the saved run: Jaeger http://localhost:16686/trace/457bd8a5df33ebb2fc504d5c4d903e63 , or Bronto https://app.eu.bronto.io/org/3cf39069-b798-4b37-b0a4-08f02ec7f17c/tracing/traces?timeRange=Last+2+days&services=bookshop-agent&traceId=457bd8a5df33ebb2fc504d5c4d903e63 . Open the `execute_tool get_order_status` span: arguments ORD-1042, and `bookshop.check.order_owned = false`. The sampler kept this run because of that attribute.
 
 A check in the run: after the lookup, compare the order's owner with the customer who's asking, and write the result on the span. It's two lines in the lab. Now "false" is something you can alert on, and one more sampling rule keeps that run. It's cheap and certain, and it exists before the run ends.
 
@@ -1319,7 +1320,7 @@ part: Monday
 <div class="rows mv">
   <div><b>The GenAI conventions</b><span>Still Development, with no stable release. Names change. Pin versions; rename in the Collector.</span></div>
   <div><b>Cost, evaluations, guardrails</b><span>Proposals or Development. Use your own names until they land.</span></div>
-  <div><b>The newer Collector pieces</b><span>Filter, the span-to-metrics connector, redaction on logs and the normalizer are alpha. Tail sampling, transform and redaction on traces are beta.</span></div>
+  <div><b>The newer Collector pieces</b><span>Filter, the <code>signal_to_metrics</code> connector, redaction on logs and the normalizer are alpha. Tail sampling, transform and redaction on traces are beta.</span></div>
 </div>
 
 <p class="cap1">The five checklist items don't depend on any of this and work today.</p>

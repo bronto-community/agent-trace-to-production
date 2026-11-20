@@ -105,7 +105,7 @@ Switch the step by recreating the Collector:
 COLLECTOR_CONFIG=step8-sample.yaml docker compose up -d --no-deps collector
 ```
 
-For the metrics and logs that steps 7 and 9 use, uncomment the four Session 2 lines at the end of `.env`.
+The example `.env` already exports metrics and logs over OTLP, which steps 7 and 9 use. Session 1 ran with both set to `none`.
 
 ### What changed from the Session 1 lab
 
