@@ -2,6 +2,7 @@
 /*
 !/.gitignore
 !/README.md
+!/LICENSE
 !/slides/
 !/lab/
 
@@ -18,12 +19,7 @@ node_modules/
 /slides/export/
 /slides/dist/
 
-# lab: local state and proofing helpers
+# lab: local state
 /lab/.venv/
 /lab/out/
 /lab/jaeger-data/
-/lab/try.sh
-/lab/gen.sh
-/lab/find.py
-/lab/kept.py
-/lab/proof_inspect.py

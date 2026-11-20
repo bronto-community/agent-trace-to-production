@@ -1,6 +1,7 @@
 services:
   jaeger:
     image: jaegertracing/jaeger:2.22.0
+    restart: unless-stopped   # come back after Docker or the machine restarts
     command: ["--config=/etc/jaeger/jaeger.yaml"]
     user: "0" # so it can write to the mounted folder
     volumes:
@@ -10,6 +11,7 @@ services:
       - "${JAEGER_UI_PORT:-16686}:16686" # UI
   collector:
     image: otel/opentelemetry-collector-contrib:0.165.0
+    restart: unless-stopped   # come back after Docker or the machine restarts
     command: ["--config=/etc/otelcol/${COLLECTOR_CONFIG:-step5-connect.yaml}"]
     volumes:
       - ./collector:/etc/otelcol:ro
@@ -21,7 +23,9 @@ services:
       - "${OTLP_PORT:-4318}:4318" # OTLP/HTTP, where the agent already sends
   sink: # stands in for your backend: writes what it receives to ./out
     image: otel/opentelemetry-collector-contrib:0.165.0
+    restart: unless-stopped   # come back after Docker or the machine restarts
     command: ["--config=/etc/otelcol/sink.yaml"]
+    user: "0" # so it can write to ./out on Linux as well
     volumes:
       - ./collector:/etc/otelcol:ro
       - ./out:/out
