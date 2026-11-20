@@ -1,0 +1,44 @@
+# The shell behind the terminal slides (started by slides/demo-terminal.sh through ttyd).
+# Each demo is one short command; it prints the real commands before running them.
+cd "$(dirname "${BASH_SOURCE[0]}")"
+set -a
+[ -f ../.env ] && . ../.env          # BRONTO_API_KEY, BRONTO_REGION, if you send to Bronto
+set +a
+if [ -n "$BRONTO_API_KEY" ]; then
+  export BACKEND_ENDPOINT="https://ingestion.${BRONTO_REGION:-eu}.bronto.io" BACKEND_API_KEY="$BRONTO_API_KEY" BACKEND_DATASET="${BACKEND_DATASET:-bookshop-lab}"
+fi
+export OTEL_METRICS_EXPORTER=otlp OTEL_LOGS_EXPORTER=otlp
+export OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE=delta OTEL_PYTHON_LOGGING_AUTO_INSTRUMENTATION_ENABLED=true
+
+AGENT="uv run --env-file .env opentelemetry-instrument python agent_v5.py"
+show() { printf '\n\033[1;38;5;209m$ %s\033[0m\n' "$*"; }
+# The OpenAI client has no short timeout; give up after 90 s so a hung call cannot stall the demo.
+agent() { perl -e 'alarm shift; exec @ARGV' 90 $AGENT; }
+collector() {   # collector <config>: switch the Collector, only if it is not already on that config
+  docker inspect lab-collector-1 --format '{{join .Config.Cmd " "}}' 2>/dev/null | grep -q "$1" && return
+  show "COLLECTOR_CONFIG=$1 docker compose up -d --no-deps collector"
+  COLLECTOR_CONFIG=$1 docker compose up -d --no-deps collector 2>&1 | tail -1; sleep 3
+}
+
+connect() { collector step5-connect.yaml; show "$AGENT"; agent; }
+govern() {
+  collector step6-govern.yaml
+  local q="Hi, Maria Lopez here (maria.lopez@example.com). I paid with card 4111 1111 1111 1111. Where is order ORD-1043, and is Tracing Distributed Systems in Practice in stock?"
+  show "OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT=SPAN_ONLY QUESTION=\"$q\" $AGENT"
+  OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT=SPAN_ONLY QUESTION="$q" agent
+}
+sample() {
+  collector step8-sample.yaml
+  show 'for m in "" slow loop wrong wrong wrong wrong; do FAILURE=$m '"$AGENT"' & done; wait'
+  for m in "" slow loop wrong wrong wrong wrong; do FAILURE=$m agent 2>&1 | cut -c1-100 & done; wait
+}
+slow() { collector step8-sample.yaml; show "FAILURE=slow $AGENT"; FAILURE=slow agent; }
+loop() {
+  collector step8-sample.yaml
+  show "FAILURE=loop OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT=EVENT_ONLY OTEL_RESOURCE_ATTRIBUTES=bookshop.content.approved=true $AGENT"
+  FAILURE=loop OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT=EVENT_ONLY OTEL_RESOURCE_ATTRIBUTES=bookshop.content.approved=true agent
+}
+
+PS1='\[\033[1;32m\]bookshop-lab\[\033[0m\] $ '
+clear
+echo "demos: connect · govern · sample · slow · loop"

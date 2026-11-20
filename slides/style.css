@@ -1,0 +1,226 @@
+/* ── Packt theme, taken from Juraci's Session 1 deck ──────────────────────────
+   (Packt-Instrumenting-the-Agent-Juraci.pptx). White content slides with a
+   label + rule header, the orange <p> mark top right, "Pg: n" footer. Black
+   section, cover and quote slides over the network image. Outfit for text,
+   Lexend Deca for quotes, Courier for code. Orange #FA7040 is the brand,
+   green #00CD8F the accent.
+
+   Var names are kept from the earlier Bronto version so the components work
+   unchanged: yellow → green highlight, sapphire → neutral blue, claim → the
+   problem colour. */
+
+:root {
+  --bg:            #FFFFFF;
+  --surface:       #F4F4F4;
+  --sand:          #E9E9E9;
+  --sand-2:        #F4F4F4;
+  --ink:           #000000;
+  --ink-dim:       #5A5A5A;
+  --border:        #D6D6D6;
+  --shadow:        none;
+
+  --orange:        #FA7040;
+  --orange-soft:   #FEE3D8;
+  --green:         #00CD8F;
+  --green-soft:    #D7F6EB;
+  --green-ink:     #007A55;
+  --quote-green:   #00FFAB;
+  --blue:          #1C88CF;
+  --blue-soft:     #D5E9F7;
+  --code-bg:       #191919;
+
+  --yellow:        var(--green);
+  --yellow-bg:     var(--green-soft);
+  --yellow-line:   var(--green);
+  --yellow-dot:    var(--green);
+  --yellow-ink:    var(--green-ink);
+  --sapphire:      var(--blue);
+  --sapphire-soft: var(--blue-soft);
+  --sapphire-dark: #0F5E91;
+  --mint:          var(--green);
+  --mint-soft:     var(--green-soft);
+  --mint-ink:      var(--green-ink);
+  --lime:          #CDE519;
+  --claim:         var(--orange);
+  --claim-soft:    var(--orange-soft);
+  --accent:        var(--orange);
+
+  --sans:  'Outfit', system-ui, sans-serif;
+  --quote: 'Lexend Deca', 'Outfit', sans-serif;
+  --mono:  'Courier Prime', 'Courier New', monospace;
+}
+
+.slidev-layout {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  --slidev-code-font-size: 0.8em;
+}
+.slidev-layout h1 {
+  font-family: var(--sans); font-weight: 700; font-size: 2.05rem; letter-spacing: -0.01em; line-height: 1.12;
+  color: inherit; margin: 0 0 0.6rem;
+}
+.slidev-layout h2, .slidev-layout h3 { font-family: var(--sans); color: inherit; }
+.slidev-layout h1 + p { opacity: 1; }
+.mono, .slidev-layout code { font-family: var(--mono); }
+.dim { color: var(--ink-dim); }
+
+/* ── content frame ───────────────────────────────────────────────────────── */
+.slidev-layout.pk-frame { padding: 0; position: relative; height: 100%; }
+.pk-label { position: absolute; top: 22px; left: 55px; font-size: 0.8rem; }
+.pk-rule { position: absolute; left: 55px; right: 55px; height: 1.5px; background: currentColor; }
+.pk-rule.top { top: 52px; }
+.pk-rule.bottom { top: 498px; }
+.pk-mark { position: absolute; top: 18px; right: 52px; width: 44px; }
+.pk-who { position: absolute; top: 12px; right: 112px; display: flex; align-items: center; gap: 0.35rem; font-size: 0.7rem; color: var(--ink-dim); }
+.pk-who span + .pt { margin-left: 0.5rem; }
+.pk-dark .pk-who { color: #CFCFCF; }
+.pk-body { position: absolute; top: 64px; left: 55px; right: 55px; bottom: 60px; }
+.pk-pg { position: absolute; top: 507px; left: 58px; font-size: 0.75rem; }
+.pk-next { position: absolute; top: 500px; right: 55px; font-size: 1.5rem; font-weight: 700; line-height: 1; color: #F97141; }
+.pk-dark { background: #000; color: #fff; --ink: #fff; --ink-dim: #B5B5B5; --surface: #191919; --sand: #2A2A2A; --border: #3A3A3A; }
+
+/* ── black slides over the network image ─────────────────────────────────── */
+.pk-hero, .pk-quote, .pk-about, .pk-waiting { background: #000 !important; color: #fff; padding: 0 !important; position: relative; height: 100%; }
+.pk-hero { background: #000 url('/img/packt/network.png') 62% center / cover no-repeat !important; }
+.pk-wordmark { position: absolute; top: 17px; right: 55px; width: 70px; }
+.pk-hero-text { position: absolute; left: 55px; top: 229px; width: 64%; }
+.pk-hero-rule { display: block; width: 100%; height: 1.5px; background: #fff; margin-bottom: 0.9rem; }
+.slidev-layout.pk-hero h1 { font-weight: 400; font-size: 2.45rem; line-height: 1.3; letter-spacing: 0; margin: 0; }
+.pk-cover .pk-hero-text { top: 226px; width: 62%; }
+.slidev-layout.pk-cover h1 { font-size: 2.4rem; font-weight: 400; line-height: 1.25; }
+.slidev-layout.pk-cover p { font-size: 1.65rem; font-weight: 400; line-height: 1.45; margin: 0; }
+
+.pk-quote .pk-mark { top: 22px; right: 52px; }
+.pk-quote-marks { position: absolute; top: 55px; left: 55px; width: 120px; }
+.pk-quote-text { position: absolute; left: 55px; right: 90px; top: 210px; font-family: var(--quote); font-weight: 700; font-size: 2.4rem; line-height: 1.2; }
+.slidev-layout .pk-quote-text p { margin: 0; line-height: 1.2 !important; }
+.pk-quote-text em { font-style: normal; color: var(--quote-green); }
+.pk-quote-by { position: absolute; left: 55px; right: 90px; top: 458px; font-family: var(--quote); font-weight: 700; font-size: 1.05rem; line-height: 1.25; }
+
+.pk-agenda { padding: 0 !important; display: grid; grid-template-columns: 38% 1fr; height: 100%; }
+.pk-agenda-l { background: #000; color: #fff; position: relative; padding: 0 30px; }
+.pk-agenda-l .pk-hero-rule { margin-top: 190px; width: 160px; }
+.slidev-layout.pk-agenda h1 { font-weight: 400; font-size: 2.6rem; color: #fff; }
+.pk-agenda-bits { position: absolute; bottom: 70px; left: 0; display: flex; gap: 14px; align-items: center; }
+.pk-agenda-bits i { display: block; width: 26px; height: 8px; background: #5A5A5A; }
+.pk-agenda-bits i.b { width: 8px; background: #57B7F7; }
+.pk-agenda-bits i.g { width: 8px; background: var(--green); }
+.pk-agenda-r { position: relative; padding: 140px 55px 0 30px; }
+.pk-agenda-r ol { list-style: none; margin: 0; padding: 0; }
+.pk-agenda-r li { position: relative; border-top: 1.5px solid #000; padding: 0.55rem 0 0.55rem 2.2rem; font-size: 1.05rem; }
+.pk-agenda-r li:last-child { border-bottom: 1.5px solid #000; }
+.pk-agenda-r li span { position: absolute; left: 0.2rem; top: 0.3rem; font-size: 0.65rem; color: var(--green-ink); }
+
+.pk-photo { border-radius: 50%; border: 5px solid #5CC98F; object-fit: cover; background: #222; }
+.pk-about { display: grid; grid-template-columns: 44% 1fr; align-items: center; }
+.pk-about-who { display: flex; flex-direction: column; align-items: center; gap: 0.15rem; }
+.pk-about-who .pk-photo { width: 150px; height: 150px; margin-bottom: 0.8rem; }
+.pk-about-who b { font-weight: 400; font-size: 1.35rem; }
+.pk-about-who span { font-size: 0.85rem; }
+.pk-about-text { padding-right: 60px; font-size: 0.95rem; line-height: 1.45; }
+.slidev-layout.pk-about h2 { font-size: 1.6rem; font-weight: 400; margin: 0 0 0.9rem; }
+.pk-about-text h2 em { font-style: normal; color: #5CC98F; }
+.pk-about-text ul { margin: 0; padding-left: 1rem; }
+.pk-about-text li { margin-bottom: 0.45rem; }
+
+.pk-starting { position: absolute; top: 26px; left: 30px; display: inline-flex; align-items: center; gap: 0.6rem; background: #fff; color: #000; border: 3px solid var(--green); border-radius: 999px; padding: 0.2rem 0.35rem 0.2rem 0.8rem; font-size: 1rem; }
+.pk-starting i { font-style: normal; display: grid; place-items: center; width: 1.3rem; height: 1.3rem; border-radius: 50%; background: var(--green); color: #fff; font-weight: 700; }
+.pk-band { position: absolute; top: 120px; left: 0; width: 100%; background: #5CC98F; color: #fff; font-size: 1.55rem; padding: 0.45rem 55px; }
+.pk-blurb { position: absolute; top: 200px; left: 55px; right: 120px; font-size: 1rem; line-height: 1.4; }
+.pk-wait-who { position: absolute; right: 55px; bottom: 50px; display: flex; align-items: center; gap: 1.2rem; text-align: right; }
+.pk-wait-who b { display: block; font-weight: 400; font-size: 1.15rem; text-decoration: underline; text-underline-offset: 6px; text-decoration-thickness: 1px; }
+.pk-wait-who span { font-size: 0.8rem; }
+.pk-wait-who .pk-photo { width: 130px; height: 130px; }
+
+/* ── building blocks used on content slides ─────────────────────────────── */
+.pill {
+  display: inline-flex; align-items: center; gap: 0.5em;
+  padding: 0.2em 0.85em; border-radius: 999px;
+  font-size: 0.8rem; font-weight: 500; white-space: nowrap;
+  background: #fff; border: 2px solid var(--green); color: #000;
+}
+
+.live-cue {
+  position: absolute; top: -45px; left: 50%; transform: translateX(-50%);
+  font-family: var(--mono); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em;
+  padding: 0.15em 0.9em; border-radius: 999px; background: var(--green); color: #000;
+}
+
+.todo {
+  display: inline-block; padding: 0.1em 0.5em; border-radius: 4px;
+  background: var(--lime); font-family: var(--mono); font-size: 0.7rem; color: #000;
+}
+
+.card { background: transparent; border-top: 1.5px solid currentColor; border-radius: 0; padding: 0.7rem 0.1rem 0; min-width: 0; }
+.slidev-layout .card h3 { margin: 0 0 0.45rem; font-size: 1.25rem; font-weight: 700; line-height: 1.2; }
+.slidev-layout .card p { margin: 0; font-size: 1rem; color: var(--ink-dim); line-height: 1.45; }
+.cards { display: grid; gap: 1.6rem; margin-top: 1.2rem; }
+.cards.c2 { grid-template-columns: repeat(2, 1fr); }
+.cards.c3 { grid-template-columns: repeat(3, 1fr); }
+.cards.c4 { grid-template-columns: repeat(4, 1fr); }
+.chip { display: inline-block; font-size: 0.75rem !important; font-weight: 600; color: var(--green-ink); margin-bottom: 0.35rem; text-transform: uppercase; letter-spacing: 0.06em; }
+.pk-dark .chip { color: var(--green); }
+
+.bignum { font-family: var(--sans); font-weight: 700; font-size: 3.1rem; letter-spacing: -0.03em; line-height: 1; font-variant-numeric: tabular-nums; }
+
+/* code panels: Juraci's dark boxes */
+.cfg { background: var(--code-bg); border-radius: 12px; overflow: hidden; min-width: 0; color: #fff; }
+.cfg-h { display: flex; justify-content: space-between; gap: 1rem; padding: 0.4rem 0.9rem; font-family: var(--mono); font-size: 0.7rem; color: #A8A8A8; background: #262626; }
+.cfg-h b { color: #fff; font-weight: 700; }
+.cfg .slidev-code, .slidev-layout .slidev-code { margin: 0 !important; border-radius: 0 !important; background: var(--code-bg) !important; font-family: var(--mono) !important; }
+.slidev-layout pre.slidev-code { border-radius: 10px !important; }
+.cfg pre.slidev-code { border-radius: 0 !important; }
+.two { display: grid; grid-template-columns: 1.3fr 1fr; gap: 1.6rem; align-items: start; margin-top: 0.6rem; }
+.two > * { min-width: 0; }
+.two .side { align-self: center; font-size: 1.05rem; line-height: 1.5; }
+.two .side p { margin: 0 0 0.8rem; }
+
+.slidev-layout :not(pre) > code { background: var(--surface); padding: 0.05em 0.3em; border-radius: 4px; font-size: 0.9em; color: inherit; }
+
+.slidev-layout a.url { font-family: var(--mono); color: inherit; border-bottom: 1px solid currentColor; text-decoration: none; }
+
+kbd { background: #fff; border: 1px solid var(--border); border-radius: 5px; padding: 1px 6px; font-size: 0.85em; }
+
+/* section cards: the Collector built so far, on black */
+.pk-section .pk-hero-text { top: 150px; }
+.pk-section-pl { position: absolute; left: 55px; right: 55px; top: 330px; }
+.pk-section-pl .pl-node { background: #1C1C1C; box-shadow: none; }
+.pk-section-pl .pl-node.edge { background: #2A2A2A; }
+.pk-section-pl .pl-k { color: #fff; }
+.pk-section-pl .pl-d, .pk-section-pl .pl-p, .pk-section-pl .pl-arrow { color: #A8A8A8; }
+.pk-section-pl .ghost { background: transparent; outline-color: #555; opacity: 0.45; }
+.pk-section-pl .now { background: #fff; box-shadow: 0 0 0 2px var(--green); }
+.pk-section-pl .now .pl-k { color: #000; }
+.pk-section-pl .now .pl-d { color: #444; }
+.pk-section-pl .now .pl-p { color: var(--green-ink); }
+
+.slidev-layout .lead { font-size: 1.15rem; line-height: 1.4; margin: 0.2rem 0 0.4rem; }
+
+/* a query or command as typed, not a mock window */
+.q { font-family: var(--mono); font-size: 0.8rem; line-height: 1.5; background: var(--surface); border-left: 3px solid var(--green); border-radius: 0 8px 8px 0; padding: 0.5rem 0.8rem; margin: 0.6rem 0; }
+.q b { background: var(--orange-soft); color: #B23F14; padding: 0 0.25em; border-radius: 3px; }
+.slidev-layout .cap { margin-top: 0.8rem; font-size: 1.05rem; line-height: 1.4; }
+
+/* v3: sparse slides. One visual, one caption. */
+.slidev-layout .cap1 { margin-top: 0.9rem; font-size: 1.15rem; line-height: 1.4; }
+.slidev-layout .mon { position: absolute; left: 0; right: 0; bottom: -4px; font-size: 1rem; }
+.mon b { background: var(--green-soft); color: var(--green-ink); padding: 0.15em 0.6em; border-radius: 6px; margin-right: 0.5em; font-weight: 700; }
+.honest { border-left: 4px solid var(--orange); padding-left: 0.8rem; }
+.big2 { display: grid; grid-template-columns: 1fr 1fr; gap: 2.2rem; margin-top: 1.4rem; }
+.big2 h3 { font-size: 1.5rem !important; margin: 0 0 0.5rem !important; }
+.big2 p, .big2 li { font-size: 1.1rem; line-height: 1.5; }
+.big2 ul { margin: 0; padding-left: 1.1rem; }
+.rows { margin-top: 1.2rem; display: flex; flex-direction: column; }
+.rows > div { display: grid; grid-template-columns: 15rem 1fr; gap: 1.2rem; padding: 0.7rem 0; border-top: 1px solid var(--border); font-size: 1.1rem; align-items: baseline; }
+.rows > div:last-child { border-bottom: 1px solid var(--border); }
+.rows b { font-weight: 700; }
+.rows span { color: var(--ink-dim); }
+.rows .pick b { color: var(--green-ink); }
+.dx { display: grid; grid-template-columns: 1fr 1fr; gap: 1.6rem; margin-top: 0.8rem; font-size: 1rem; line-height: 1.4; }
+.dx b { display: block; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--green-ink); margin-bottom: 0.15rem; }
+.dx span:last-child b { color: var(--blue); }
+.shotrow { display: grid; grid-template-columns: auto 1fr; gap: 1.6rem; align-items: center; margin-top: 0.3rem; }
+.dx.v { grid-template-columns: 1fr; gap: 1.3rem; margin-top: 0; font-size: 1.08rem; }
+.dx.v span:nth-child(3) b { color: #B23F14; }
+.pair2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; align-items: center; margin-top: 0.6rem; }

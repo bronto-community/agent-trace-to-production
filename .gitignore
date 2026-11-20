@@ -1,0 +1,29 @@
+# Only the talk's slides and lab are published; everything else in this folder is working material.
+/*
+!/.gitignore
+!/README.md
+!/slides/
+!/lab/
+
+.DS_Store
+.env*
+!.env.example
+node_modules/
+.vercel
+
+# slides: old decks, rehearsal recordings, exports
+/slides/slides-v1.md
+/slides/slides-v2.md
+/slides/dryrun/
+/slides/export/
+/slides/dist/
+
+# lab: local state and proofing helpers
+/lab/.venv/
+/lab/out/
+/lab/jaeger-data/
+/lab/try.sh
+/lab/gen.sh
+/lab/find.py
+/lab/kept.py
+/lab/proof_inspect.py

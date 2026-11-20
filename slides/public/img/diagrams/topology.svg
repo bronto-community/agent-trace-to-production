@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 870 250" role="img" aria-label="Collectors next to each agent mask content, then a central tier does tail sampling before the backend">
+  <defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#000"/></marker></defs>
+  <g font-family="Courier New, monospace" font-size="13">
+    <rect x="10" y="24" width="150" height="40" rx="8" fill="#F4F4F4"/><text x="85" y="49" text-anchor="middle">bookshop-agent</text>
+    <rect x="10" y="94" width="150" height="40" rx="8" fill="#F4F4F4"/><text x="85" y="119" text-anchor="middle">bookshop-mcp</text>
+    <rect x="10" y="164" width="150" height="40" rx="8" fill="none" stroke="#BDBDBD" stroke-dasharray="5 4"/><text x="85" y="189" text-anchor="middle" fill="#5A5A5A">the next agent</text>
+    <rect x="220" y="24" width="120" height="40" rx="8" fill="#D7F6EB"/><text x="280" y="49" text-anchor="middle">Collector</text>
+    <rect x="220" y="94" width="120" height="40" rx="8" fill="#D7F6EB"/><text x="280" y="119" text-anchor="middle">Collector</text>
+    <rect x="220" y="164" width="120" height="40" rx="8" fill="#D7F6EB"/><text x="280" y="189" text-anchor="middle">Collector</text>
+    <rect x="470" y="59" width="150" height="110" rx="10" fill="#D5E9F7"/><text x="545" y="108" text-anchor="middle">central</text><text x="545" y="128" text-anchor="middle">Collectors</text>
+    <rect x="730" y="84" width="130" height="60" rx="10" fill="#F4F4F4"/><text x="795" y="119" text-anchor="middle">backend</text>
+  </g>
+  <g stroke="#000" stroke-width="1.8" fill="none" marker-end="url(#ah)">
+    <line x1="160" y1="44" x2="216" y2="44"/><line x1="160" y1="114" x2="216" y2="114"/><line x1="160" y1="184" x2="216" y2="184" stroke="#BDBDBD"/>
+    <path d="M340 44 C 410 44, 400 90, 466 96"/><line x1="340" y1="114" x2="466" y2="114"/><path d="M340 184 C 410 184, 400 138, 466 132"/>
+    <line x1="620" y1="114" x2="726" y2="114"/>
+  </g>
+  <g font-family="Helvetica Neue, Arial, sans-serif" font-size="14" font-weight="700">
+    <text x="280" y="232" text-anchor="middle" fill="#007A55">mask and drop content</text>
+    <text x="545" y="194" text-anchor="middle" fill="#0F5E91">tail sampling</text>
+    <text x="405" y="26" text-anchor="middle" font-size="12" font-weight="400" fill="#5A5A5A">routed by trace ID</text>
+  </g>
+</svg>

@@ -1,0 +1,13 @@
+node_modules
+dist
+.slidev
+*.log
+.DS_Store
+
+.vercel
+
+# Claude Code session transcripts (dated dumps at the repo root)
+/20??-??-??-*.txt
+
+# Private working notes: links to internal drafts, not for the public repo
+/REFERENCES.md

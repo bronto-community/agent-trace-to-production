@@ -1,0 +1,20 @@
+{
+  "name": "packt-agent-trace-to-production",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "slidev --open",
+    "build": "slidev build",
+    "export": "slidev export"
+  },
+  "dependencies": {
+    "@slidev/cli": "^52.18.0",
+    "@slidev/theme-default": "latest",
+    "qrcode-generator": "^2.0.4",
+    "roughjs": "^4.6.6",
+    "vue": "^3.5.0"
+  },
+  "devDependencies": {
+    "playwright-chromium": "^1.65.1"
+  }
+}

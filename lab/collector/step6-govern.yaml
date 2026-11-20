@@ -1,0 +1,49 @@
+# Step 6 · Govern: what is allowed to leave. Step 5 plus filter, redaction and transform.
+receivers:
+  otlp:
+    protocols:
+      http: { endpoint: 0.0.0.0:4318 }   # the port the agent already sends to
+
+processors:
+  filter/opt-in:                         # content events only from services that were approved
+    error_mode: ignore
+    log_conditions:
+      - log.event_name == "gen_ai.client.inference.operation.details" and resource.attributes["bookshop.content.approved"] != "true"
+
+  filter/noise:                          # the one-span trace the MCP handshake leaves behind
+    error_mode: ignore
+    trace_conditions:
+      - span.attributes["mcp.method.name"] == "notifications/initialized"
+
+  redaction/pii:                         # mask personal data wherever it appears: a backstop, not the control
+    allow_all_keys: true
+    blocked_values:
+      - '[\w.+-]+@[\w-]+\.[\w.]+'        # email addresses
+      - '\b(?:\d[ -]?){13,16}\b'         # card numbers. Naive on purpose: watch what it does to an ISBN.
+    summary: info                        # redaction.masked.count on every span it touched
+
+  transform/content:                     # shape what is left
+    error_mode: ignore
+    trace_statements:
+      - delete_key(span.attributes, "gen_ai.tool.call.result")
+      - truncate_all(span.attributes, 2048)
+
+exporters:
+  otlp_grpc/jaeger: { endpoint: jaeger:4317, tls: { insecure: true } }
+  otlp_http/backend:                     # any OTLP backend: change the endpoint and the auth header
+    endpoint: ${env:BACKEND_ENDPOINT}
+    headers:
+      x-bronto-api-key: ${env:BACKEND_API_KEY}
+      x-bronto-dataset: ${env:BACKEND_DATASET}
+
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [filter/noise, redaction/pii, transform/content]
+      exporters: [otlp_grpc/jaeger, otlp_http/backend]
+    metrics: { receivers: [otlp], exporters: [otlp_http/backend] }
+    logs:
+      receivers: [otlp]
+      processors: [filter/opt-in, redaction/pii]
+      exporters: [otlp_http/backend]

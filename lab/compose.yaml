@@ -1,0 +1,27 @@
+services:
+  jaeger:
+    image: jaegertracing/jaeger:2.22.0
+    command: ["--config=/etc/jaeger/jaeger.yaml"]
+    user: "0" # so it can write to the mounted folder
+    volumes:
+      - ./jaeger.yaml:/etc/jaeger/jaeger.yaml:ro
+      - ./jaeger-data:/badger # traces are kept here across restarts
+    ports:
+      - "${JAEGER_UI_PORT:-16686}:16686" # UI
+  collector:
+    image: otel/opentelemetry-collector-contrib:0.165.0
+    command: ["--config=/etc/otelcol/${COLLECTOR_CONFIG:-step5-connect.yaml}"]
+    volumes:
+      - ./collector:/etc/otelcol:ro
+    environment:
+      BACKEND_ENDPOINT: ${BACKEND_ENDPOINT:-http://sink:4318}
+      BACKEND_API_KEY: ${BACKEND_API_KEY:-none}
+      BACKEND_DATASET: ${BACKEND_DATASET:-bookshop-lab}
+    ports:
+      - "${OTLP_PORT:-4318}:4318" # OTLP/HTTP, where the agent already sends
+  sink: # stands in for your backend: writes what it receives to ./out
+    image: otel/opentelemetry-collector-contrib:0.165.0
+    command: ["--config=/etc/otelcol/sink.yaml"]
+    volumes:
+      - ./collector:/etc/otelcol:ro
+      - ./out:/out

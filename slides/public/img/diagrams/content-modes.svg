@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 870 300" role="img" aria-label="Four content capture modes: off, on for a slice, on log events in a separate pipeline, on spans">
+  <g font-family="Helvetica Neue, Arial, sans-serif">
+    <g font-size="17" font-weight="700"><text x="0" y="42">Off</text><text x="0" y="117">On, for a slice</text><text x="0" y="192">On log events</text><text x="0" y="267">On spans</text></g>
+    <g stroke="#D6D6D6"><line x1="0" y1="75" x2="870" y2="75"/><line x1="0" y1="150" x2="870" y2="150"/><line x1="0" y1="225" x2="870" y2="225"/></g>
+    <g font-family="Courier New, monospace" font-size="13">
+      <rect x="190" y="18" width="150" height="38" rx="8" fill="#D5E9F7"/><text x="265" y="42" text-anchor="middle">span</text>
+      <rect x="190" y="93" width="150" height="38" rx="8" fill="#D5E9F7"/><text x="265" y="117" text-anchor="middle">span</text>
+      <rect x="352" y="93" width="110" height="38" rx="8" fill="#FEE3D8" stroke="#FA7040" stroke-dasharray="5 4"/><text x="407" y="117" text-anchor="middle">content</text>
+      <rect x="190" y="168" width="150" height="38" rx="8" fill="#D5E9F7"/><text x="265" y="192" text-anchor="middle">span</text>
+      <rect x="400" y="168" width="110" height="38" rx="8" fill="#FEE3D8"/><text x="455" y="192" text-anchor="middle">content</text>
+      <rect x="190" y="243" width="272" height="38" rx="8" fill="#D5E9F7"/><rect x="346" y="248" width="110" height="28" rx="6" fill="#FEE3D8"/><text x="250" y="267" text-anchor="middle">span</text><text x="401" y="267" text-anchor="middle">content</text>
+    </g>
+    <line x1="340" y1="187" x2="396" y2="187" stroke="#000" stroke-width="1.5" stroke-dasharray="3 3"/><text x="368" y="180" text-anchor="middle" font-size="10" fill="#5A5A5A">trace ID</text>
+    <g font-size="14" fill="#5A5A5A">
+      <text x="560" y="34">The default. 10.8 KB a run.</text><text x="560" y="54">Check your framework's default.</text>
+      <text x="560" y="109">One service, one window.</text><text x="560" y="129">Somebody approved it.</text>
+      <text x="560" y="184">Own pipeline, own access,</text><text x="560" y="204">own retention.</text>
+      <text x="560" y="259">18.2 KB a run. Kept exactly</text><text x="560" y="279">as long as the trace.</text>
+    </g>
+  </g>
+</svg>

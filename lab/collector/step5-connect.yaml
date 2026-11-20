@@ -1,0 +1,19 @@
+# Step 5 · Connect: one Collector between the agent and the backend.
+receivers:
+  otlp:
+    protocols:
+      http: { endpoint: 0.0.0.0:4318 }   # the port the agent already sends to
+
+exporters:
+  otlp_grpc/jaeger: { endpoint: jaeger:4317, tls: { insecure: true } }
+  otlp_http/backend:                     # any OTLP backend: change the endpoint and the auth header
+    endpoint: ${env:BACKEND_ENDPOINT}
+    headers:
+      x-bronto-api-key: ${env:BACKEND_API_KEY}
+      x-bronto-dataset: ${env:BACKEND_DATASET}
+
+service:
+  pipelines:
+    traces:  { receivers: [otlp], exporters: [otlp_grpc/jaeger, otlp_http/backend] }
+    metrics: { receivers: [otlp], exporters: [otlp_http/backend] }
+    logs:    { receivers: [otlp], exporters: [otlp_http/backend] }

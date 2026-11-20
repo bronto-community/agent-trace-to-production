@@ -1,0 +1,12 @@
+[
+  {"isbn": "978-1-80000-101-1", "title": "Tracing Distributed Systems in Practice", "topics": ["tracing", "opentelemetry", "context propagation", "microservices"], "summary": "Hands-on guide to distributed tracing with OpenTelemetry, from first spans to context propagation across queues and services."},
+  {"isbn": "978-1-80000-102-8", "title": "The OpenTelemetry Collector Handbook", "topics": ["collector", "pipelines", "processors", "opentelemetry"], "summary": "Building telemetry pipelines with receivers, processors, and exporters, including sampling and redaction."},
+  {"isbn": "978-1-80000-103-5", "title": "Observing LLM Applications", "topics": ["llm", "genai", "agents", "tracing", "opentelemetry"], "summary": "Instrumenting language model applications and agents: token usage, latency, tool calls, and cost."},
+  {"isbn": "978-1-80000-104-2", "title": "Prometheus for Platform Teams", "topics": ["metrics", "prometheus", "alerting", "promql"], "summary": "Metrics, PromQL, recording rules, and alerting for teams running shared platforms."},
+  {"isbn": "978-1-80000-105-9", "title": "Building Agents with the Model Context Protocol", "topics": ["mcp", "agents", "tools", "llm"], "summary": "Designing tools and servers for AI agents using the Model Context Protocol, with security and testing patterns."},
+  {"isbn": "978-1-80000-106-6", "title": "Logs That Help at 3 AM", "topics": ["logging", "structured logs", "incident response"], "summary": "Structured logging, correlation with traces, and writing log messages that shorten incidents."},
+  {"isbn": "978-1-80000-107-3", "title": "Kubernetes Observability from Scratch", "topics": ["kubernetes", "metrics", "logs", "tracing"], "summary": "Collecting cluster, node, and workload telemetry on Kubernetes without drowning in data."},
+  {"isbn": "978-1-80000-108-0", "title": "Retrieval-Augmented Generation Patterns", "topics": ["rag", "retrieval", "vector search", "llm"], "summary": "Chunking, embeddings, vector search, and evaluation for retrieval-augmented generation systems."},
+  {"isbn": "978-1-80000-109-7", "title": "SLOs Without the Spreadsheet", "topics": ["slo", "reliability", "alerting", "metrics"], "summary": "Defining service level objectives and error budgets that teams actually use."},
+  {"isbn": "978-1-80000-110-3", "title": "Sampling Strategies for High-Volume Tracing", "topics": ["sampling", "tracing", "cost", "collector"], "summary": "Head sampling, tail sampling, and keeping the traces that matter when volume grows."}
+]

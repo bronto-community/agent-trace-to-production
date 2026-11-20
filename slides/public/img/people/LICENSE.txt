@@ -1,0 +1,3 @@
+security.svg, finance.svg, oncall.svg: generated with DiceBear 9 (@dicebear/collection, style "open-peeps"),
+a remix of Open Peeps by Pablo Stanley (https://www.openpeeps.com/). CC0 1.0, no attribution required.
+Clothing recoloured to Packt green #00CD8F.

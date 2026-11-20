@@ -1,0 +1,68 @@
+# Step 7 · Measure: step 6 plus metrics from spans, for what the SDK's own metrics lack.
+receivers:
+  otlp:
+    protocols:
+      http: { endpoint: 0.0.0.0:4318 }   # the port the agent already sends to
+
+processors:
+  filter/opt-in:                         # content events only from services that were approved
+    error_mode: ignore
+    log_conditions:
+      - log.event_name == "gen_ai.client.inference.operation.details" and resource.attributes["bookshop.content.approved"] != "true"
+
+  filter/noise:                          # the one-span trace the MCP handshake leaves behind
+    error_mode: ignore
+    trace_conditions:
+      - span.attributes["mcp.method.name"] == "notifications/initialized"
+
+  redaction/pii:                         # mask personal data wherever it appears: a backstop, not the control
+    allow_all_keys: true
+    blocked_values:
+      - '[\w.+-]+@[\w-]+\.[\w.]+'        # email addresses
+      - '\b(?:\d[ -]?){13,16}\b'         # card numbers. Naive on purpose: watch what it does to an ISBN.
+    summary: info                        # redaction.masked.count on every span it touched
+
+  transform/content:                     # shape what is left
+    error_mode: ignore
+    trace_statements:
+      - delete_key(span.attributes, "gen_ai.tool.call.result")
+      - truncate_all(span.attributes, 2048)
+
+connectors:
+  signal_to_metrics:                     # only what the instrumentation's own metrics lack
+    spans:
+      - name: bookshop.run.tokens
+        description: Input plus output tokens per run, from the run span
+        unit: "{token}"
+        conditions: ['attributes["gen_ai.operation.name"] == "invoke_agent"']
+        attributes: [{ key: gen_ai.agent.name }]
+        histogram:
+          buckets: [1000, 2000, 3000, 5000, 10000, 50000]
+          value: Int(attributes["gen_ai.usage.input_tokens"]) + Int(attributes["gen_ai.usage.output_tokens"])
+      - name: bookshop.run.cost
+        description: What the gateway billed per run, from the run span
+        unit: "{USD}"
+        conditions: ['attributes["gen_ai.operation.name"] == "invoke_agent"']
+        attributes: [{ key: gen_ai.agent.name }, { key: gen_ai.request.model }]
+        sum:
+          value: Double(attributes["bookshop.llm.cost_usd"])
+
+exporters:
+  otlp_grpc/jaeger: { endpoint: jaeger:4317, tls: { insecure: true } }
+  otlp_http/backend:                     # any OTLP backend: change the endpoint and the auth header
+    endpoint: ${env:BACKEND_ENDPOINT}
+    headers:
+      x-bronto-api-key: ${env:BACKEND_API_KEY}
+      x-bronto-dataset: ${env:BACKEND_DATASET}
+
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [filter/noise, redaction/pii, transform/content]
+      exporters: [otlp_grpc/jaeger, otlp_http/backend, signal_to_metrics]
+    metrics: { receivers: [otlp, signal_to_metrics], exporters: [otlp_http/backend] }
+    logs:
+      receivers: [otlp]
+      processors: [filter/opt-in, redaction/pii]
+      exporters: [otlp_http/backend]

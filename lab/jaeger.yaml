@@ -1,0 +1,38 @@
+# Jaeger with traces on disk (./jaeger-data), so they survive a restart.
+service:
+  extensions: [jaeger_storage, jaeger_query, healthcheckv2]
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [jaeger_storage_exporter]
+extensions:
+  healthcheckv2:
+    use_v2: true
+    http:
+      endpoint: 0.0.0.0:13133
+  jaeger_query:
+    storage:
+      traces: disk
+  jaeger_storage:
+    backends:
+      disk:
+        badger:
+          directories:
+            keys: /badger/keys
+            values: /badger/values
+          ephemeral: false
+          ttl:
+            spans: 720h # 30 days
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
+processors:
+  batch:
+exporters:
+  jaeger_storage_exporter:
+    trace_storage: disk
