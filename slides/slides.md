@@ -246,7 +246,7 @@ part: Step 5 · Connect · live
 
 <Term type="connect" runs="switches the Collector to the step 5 config, then runs the agent once" />
 
-<Jump :to="[{ label: 'Jaeger', url: 'http://localhost:16686/search?service=bookshop-agent&lookback=1h&limit=20' }, { label: 'Bronto', url: 'https://app.eu.bronto.io/org/3cf39069-b798-4b37-b0a4-08f02ec7f17c/tracing/traces?timeRange=Last+15+minutes&services=bookshop-agent' }]" />
+<Jump :to="[{ label: 'Jaeger', url: 'http://localhost:16686/search?service=bookshop-agent&lookback=1h&limit=20' }, { label: 'Bronto', url: 'https://app.eu.bronto.io/org/3cf39069-b798-4b37-b0a4-08f02ec7f17c/tracing/traces?timeRange=Last+15+minutes&services=bookshop-agent&operation=invoke_agent+bookshop-support' }]" />
 
 <!--
 LIVE (about 2 min). Type `connect`. It prints the two real commands before it runs them: the `docker compose` line that starts the Collector with step5-connect.yaml, and the agent run. The agent is Session 1's with the few lines this session adds; nothing in it changed to make the Collector work.
@@ -467,7 +467,7 @@ part: Step 6 · Govern · live
 <Jump :to="[{ label: 'Jaeger', url: 'http://localhost:16686/search?service=bookshop-agent&lookback=1h&limit=20' }]" />
 
 <!--
-LIVE optional (about 1.5 min). Type `govern`. Jaeger tab: open the run, the first chat span, GenAI view, input messages. Email and card masked, the name untouched, and the ISBNs in the catalog excerpt masked too.
+LIVE optional (about 1.5 min). Type `govern`. Jaeger tab: open the run, the first chat span, the GenAI tab, section Conversation. Email and card masked, the name untouched, and the ISBNs in the catalog excerpt masked too.
 
 Skip this slide if time is short: the next one shows the same masking as a screenshot, on a slightly different message.
 -->
@@ -740,7 +740,7 @@ part: Step 7 · Measure
 <!--
 (0:22) Budgets and alerts that catch runaway agents. This is a real monitor in the backend, on the tokens-per-run metric from the last chart, 99th percentile over five minutes, above 3,000.
 
-And this is it firing, yesterday morning. The chart is smoothed over time buckets; the incident row has the exact times. A run got stuck re-checking an order and used about 4,600 tokens; a normal run uses about 1,600. The loop ended at 09:13, the alert opened at 09:15. We'll open that run in step 9.
+And this is it firing, yesterday morning. The chart is smoothed over time buckets; the incident row has the exact times. A run got stuck re-checking an order and used about 4,600 tokens; a normal run uses 1,600 to 2,000. The loop ended at 09:13, the alert opened at 09:15. We'll open that run in step 9.
 
 Two honest limits. A percentile works at lab volume; with real traffic, alert on the count of runs above the budget instead. And the metric comes from the run span, which only exists when the run ends. For a run that is still burning, the signal is the rate of the instrumentation's own token metric.
 
@@ -952,7 +952,7 @@ part: Step 8 · Sample · live
 
 <Term type="sample" runs="switches to the step 8 config and starts seven runs at once: one normal, one slow, one loop, four without an order number" />
 
-<Jump :to="[{ label: 'Jaeger: all runs', url: 'http://localhost:16686/search?service=bookshop-agent&lookback=1h&limit=20' }, { label: 'Bronto: kept runs', url: 'https://app.eu.bronto.io/org/3cf39069-b798-4b37-b0a4-08f02ec7f17c/tracing/traces?timeRange=Last+5+minutes&services=bookshop-agent' }]" />
+<Jump :to="[{ label: 'Jaeger: all runs', url: 'http://localhost:16686/search?service=bookshop-agent&lookback=1h&limit=20' }, { label: 'Bronto: kept runs', url: 'https://app.eu.bronto.io/org/3cf39069-b798-4b37-b0a4-08f02ec7f17c/tracing/traces?timeRange=Last+5+minutes&services=bookshop-agent&operation=invoke_agent+bookshop-support' }]" />
 
 <!--
 LIVE optional (about 1 min, plus a few seconds for the sampler to decide after each run ends). Type `sample`. Jaeger sits before the sampler and shows all seven. The Bronto tab shows only the kept ones.
@@ -1089,7 +1089,7 @@ part: Step 9 · Debug · live
 
 <Term type="slow" runs="runs the agent once with an 8-second delay in retrieval" />
 
-<Jump :to="[{ label: 'Jaeger', url: 'http://localhost:16686/search?service=bookshop-agent&lookback=1h&limit=20' }, { label: 'Bronto', url: 'https://app.eu.bronto.io/org/3cf39069-b798-4b37-b0a4-08f02ec7f17c/tracing/traces?timeRange=Last+15+minutes&services=bookshop-agent' }]" />
+<Jump :to="[{ label: 'Jaeger', url: 'http://localhost:16686/search?service=bookshop-agent&lookback=1h&limit=20' }, { label: 'Bronto', url: 'https://app.eu.bronto.io/org/3cf39069-b798-4b37-b0a4-08f02ec7f17c/tracing/traces?timeRange=Last+15+minutes&services=bookshop-agent&operation=invoke_agent+bookshop-support' }]" />
 
 <!--
 LIVE (about 1 min). Type `slow`. If the Collector isn't on the step 8 config yet, the command switches it first and prints that line too. While it runs: this is the simulated one, an eight-second sleep in the retrieval step.
@@ -1105,7 +1105,7 @@ part: Step 9 · Debug
 
 <div class="shotrow">
 <Shot src="/img/shots/trace-loop.png" h="372px" />
-<div class="dx v"><span><b>Detected by</b> the budget alert on tokens per run: about 4,600 instead of 1,600</span><span><b>Explained by</b> the trace: the same order lookup five times, each answered "pending", no error anywhere</span><span><b>Stopped by</b> the five-round cap in the agent's code</span></div>
+<div class="dx v"><span><b>Detected by</b> the budget alert on tokens per run: about 4,600 instead of under 2,000</span><span><b>Explained by</b> the trace: the same order lookup five times, each answered "pending", no error anywhere</span><span><b>Stopped by</b> the five-round cap in the agent's code</span></div>
 </div>
 
 <!--
@@ -1113,7 +1113,7 @@ part: Step 9 · Debug
 
 LIVE on the next slide.
 
-The loop from step 7. Detected by the budget alert from step 7: about 4,600 tokens against a normal 1,600.
+The loop from step 7. Detected by the budget alert from step 7: about 4,600 tokens against a normal 1,600 to 2,000.
 
 The trace explains it: the same order lookup, five times, no error anywhere. Each call succeeded and said "pending".
 
@@ -1139,7 +1139,7 @@ part: Step 9 · Debug · live
 <!--
 LIVE (about 1.5 min). Type `loop`. Like `slow`, it makes sure the Collector is on the step 8 config; it also sends content as log events, which the slide after this one uses. It ends with "Sorry, I could not finish that request."
 
-Jaeger tab: the five lookups, then the token total and `bookshop.run.tools` on the run span. The monitor tab shows the alert a minute or two later, so come back to it. The logs tab has this run's content events: that is the next slide.
+Jaeger tab: the five lookups, then the token total and `bookshop.run.tools` on the run span. The monitor tab: the alert opens a minute or two after a loop run. The seven runs in step 8 already contained one, so it may be open or just resolved by now; show the incident rows. The logs tab has this run's content events: that is the next slide.
 -->
 
 ---
@@ -1210,7 +1210,7 @@ A trace backend can't group by shape unless you give it something to group by. S
 
 If you take one code change home from this session, it's this line.
 
-SAVED RUN (the model only does this some of the time): Jaeger http://localhost:16686/trace/e0cd242502148b225b1518c177b925cf , or Bronto https://app.eu.bronto.io/org/3cf39069-b798-4b37-b0a4-08f02ec7f17c/tracing/traces?timeRange=Last+2+days&services=bookshop-agent&traceId=e0cd242502148b225b1518c177b925cf . One tool call, then an answer that never mentions the order.
+SAVED RUN (the model only does this some of the time): Jaeger http://localhost:16686/trace/e0cd242502148b225b1518c177b925cf , or Bronto https://app.eu.bronto.io/org/3cf39069-b798-4b37-b0a4-08f02ec7f17c/tracing/traces?timeRange=Last+2+days&services=bookshop-agent&traceId=e0cd242502148b225b1518c177b925cf . One tool call, no order lookup, and the answer asks her for an order ID instead.
 -->
 
 ---
