@@ -289,7 +289,7 @@ part: Step 5 · Connect
 
 <img class="dg" src="/img/diagrams/topology.svg" alt="" />
 
-<p class="cap1 dim honest">For mixed frameworks, the <code>gen_ai_normalizer</code> processor (alpha) maps OpenInference and OpenLLMetry spans to <code>gen_ai.*</code>.</p>
+<p class="cap1 dim honest">For mixed frameworks, the <a href="https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/processor/genainormalizerprocessor/README.md" target="_blank"><code>gen_ai_normalizer</code></a> processor (alpha) maps OpenInference and OpenLLMetry spans to <code>gen_ai.*</code>.</p>
 
 <p class="mon"><b>Monday</b> Point one agent at a Collector and change nothing else.</p>
 
