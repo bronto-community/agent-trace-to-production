@@ -683,7 +683,7 @@ part: Step 7 · Measure · proof
 
 # One hour of the lab in four charts
 
-<Jump :to="[{ label: 'Bronto: metrics', url: 'https://app.eu.bronto.io/org/3cf39069-b798-4b37-b0a4-08f02ec7f17c/metrics?timeRange=Last+1+hour&queries=%5B%7B%22committedFilter%22%3A%22%22%2C%22groupKeys%22%3A%5B%5D%2C%22metricId%22%3A%22b24c67e1-a5ad-3b50-b2e7-46954760f22a%22%2C%22name%22%3A%22A%22%2C%22statFunction%22%3A%22average%22%7D%5D' }]" />
+<Jump :to="[{ label: 'Bronto: metrics', url: 'https://app.eu.bronto.io/org/3cf39069-b798-4b37-b0a4-08f02ec7f17c/metrics?timeRange=Last+2+days&queries=%5B%7B%22committedFilter%22%3A%22%22%2C%22groupKeys%22%3A%5B%5D%2C%22metricId%22%3A%22b24c67e1-a5ad-3b50-b2e7-46954760f22a%22%2C%22name%22%3A%22A%22%2C%22statFunction%22%3A%22average%22%7D%5D' }]" />
 
 <div class="quad">
   <div><span class="chip">tokens, in and out</span><Shot src="/img/shots/bronto-tokens-type.png" h="144px" /></div>
@@ -716,7 +716,7 @@ part: Step 7 · Measure
 
 # A budget alert comes after the tokens are spent
 
-<Jump :to="[{ label: 'Bronto: monitor', url: 'https://app.eu.bronto.io/org/3cf39069-b798-4b37-b0a4-08f02ec7f17c/monitors/lists?activeMonitorId=9c81d708-3e21-40db-b506-415acde45efc&timeRange=Last+4+hours' }]" />
+<Jump :to="[{ label: 'Bronto: monitor', url: 'https://app.eu.bronto.io/org/3cf39069-b798-4b37-b0a4-08f02ec7f17c/monitors/lists?activeMonitorId=9c81d708-3e21-40db-b506-415acde45efc&timeRange=Last+2+days' }]" />
 
 <p class="rule"><b>monitor</b><span class="mono">P99(bookshop.run.tokens) over 5 minutes &gt; 3,000</span></p>
 
@@ -1134,7 +1134,7 @@ part: Step 9 · Debug · live
 
 <Term type="loop" runs="runs the agent with the prompt line and order system that make it loop, content as log events" />
 
-<Jump :to="[{ label: 'Jaeger', url: 'http://localhost:16686/search?service=bookshop-agent&lookback=1h&limit=20' }, { label: 'Bronto: monitor', url: 'https://app.eu.bronto.io/org/3cf39069-b798-4b37-b0a4-08f02ec7f17c/monitors/lists?activeMonitorId=9c81d708-3e21-40db-b506-415acde45efc&timeRange=Last+4+hours' }, { label: 'Bronto: logs', url: 'https://app.eu.bronto.io/org/3cf39069-b798-4b37-b0a4-08f02ec7f17c/search?display=list&order=newest&timeRange=Last+20+minutes&select=*%2C%40raw&datasetAuthority=manual&logIds=80a64081-3aa2-4e0d-4a80-7a2b938f9d30&where=' }]" />
+<Jump :to="[{ label: 'Jaeger', url: 'http://localhost:16686/search?service=bookshop-agent&lookback=1h&limit=20' }, { label: 'Bronto: monitor', url: 'https://app.eu.bronto.io/org/3cf39069-b798-4b37-b0a4-08f02ec7f17c/monitors/lists?activeMonitorId=9c81d708-3e21-40db-b506-415acde45efc&timeRange=Last+2+days' }, { label: 'Bronto: logs', url: 'https://app.eu.bronto.io/org/3cf39069-b798-4b37-b0a4-08f02ec7f17c/search?display=list&order=newest&timeRange=Last+20+minutes&select=*%2C%40raw&datasetAuthority=manual&logIds=80a64081-3aa2-4e0d-4a80-7a2b938f9d30&where=' }]" />
 
 <!--
 LIVE (about 1.5 min). Type `loop`. Like `slow`, it makes sure the Collector is on the step 8 config; it also sends content as log events, which the slide after this one uses. It ends with "Sorry, I could not finish that request."
